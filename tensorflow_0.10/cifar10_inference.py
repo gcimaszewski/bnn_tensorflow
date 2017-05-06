@@ -60,7 +60,6 @@ if __name__ == "__main__":
     # bc01 format
     # Inputs in the range [-1,+1]
     test_set.X = np.reshape(np.subtract(np.multiply(2./255.,test_set.X),1.),(-1,3,32,32))
-  #  test_set.X = test_set.X.transpose([0, 2, 3, 1])
     # flatten targets
     test_set.y = np.hstack(test_set.y)
     # Onehot the targets
@@ -82,10 +81,7 @@ if __name__ == "__main__":
     #tensorflow doesn't have an OO format for layers - layers are just functions
     inputs = tf.placeholder(tf.float32, [1, 32, 32, 3])
     inputs_tr = tf.placeholder(tf.float32, [None, 32, 32, 3])
-    #target = T.matrix(X, 'targets')
 
-    #final output from the nonlinearity layer
- #   target = tf.placeholder(tf.float32, [None, 10])
     conv_result = tf.placeholder(tf.float32, [None, 32, 32, 128])
 
     weights = {
@@ -134,6 +130,7 @@ if __name__ == "__main__":
     }
 
     offset = {
+
         'h1' : tf.Variable(tf.zeros([128])),
 
         'h2' : tf.Variable(tf.zeros([128])),
@@ -155,11 +152,8 @@ if __name__ == "__main__":
     }
 
 
-    #try transposing the weight feature maps
-
     def cnn(x, weights, scale, offset):
 
-        #filter is only weight
         weight1 = tf.transpose(weights['wt1'], [2, 3,1,0])
         x = tf.nn.conv2d(x, weight1, [1,1,1,1], "SAME")
         x = hardware_net_tf.batch_norm(x, offset['h1'], scale['k1'])
@@ -171,27 +165,22 @@ if __name__ == "__main__":
         x = hardware_net_tf.batch_norm(x, offset['h2'], scale['k2'])
         x = hardware_net_tf.SignTheano(x)
 
-
-        #third convolution
         weight3 = tf.transpose(weights['wt3'], [2, 3, 1,0])
         x = tf.nn.conv2d(x, weight3, [1,1,1,1], "SAME")
         x = hardware_net_tf.batch_norm(x, offset['h3'], scale['k3'])
         x = hardware_net_tf.SignTheano(x)
 
-        #fourth convolution
         weight4 = tf.transpose(weights['wt4'], [2, 3, 1,0])
         x = tf.nn.conv2d(x, weight4, [1,1,1,1], "SAME")
         x = tf.contrib.layers.max_pool2d(x, kernel_size = [2,2])
         x = hardware_net_tf.batch_norm(x, offset['h4'], scale['k4'])
         x = hardware_net_tf.SignTheano(x)
 
-        #fifth convolution
         weight5 = tf.transpose(weights['wt5'], [2,3,1,0])
         x = tf.nn.conv2d(x, weight5, [1,1,1,1], "SAME")
         x = hardware_net_tf.batch_norm(x, offset['h5'], scale['k5'])
         x = hardware_net_tf.SignTheano(x)
 
-        #sixth and final convolution
         weight6 = tf.transpose(weights['wt6'], [2,3,1,0])
         x = tf.nn.conv2d(x, weight6, [1,1,1,1], "SAME")
         x = tf.contrib.layers.max_pool2d(x, kernel_size = [2,2])
@@ -199,10 +188,6 @@ if __name__ == "__main__":
         x = hardware_net_tf.SignTheano(x)
 
         x = tf.transpose(x, [0, 3, 1, 2])
-
-        rand_wts_1 = tf.random_uniform([4*4*512, 1024], minval=-1.0, maxval=1.0)
-        rand_wts_2 = tf.random_uniform([1024, 1024], minval=-1.0, maxval=1.0)
-        rand_wts_3 = tf.random_uniform([1024, 10], minval=-1.0, maxval=1.0)
 
         x = tf.reshape(x, [1, 4*4*512])
         x = tf.matmul(x, weights['wt7'])
@@ -213,7 +198,6 @@ if __name__ == "__main__":
         x = hardware_net_tf.batch_norm(x, offset['h8'], scale['k8'])
         x = hardware_net_tf.SignTheano(x)
 
-        # #final dense layer
         x = tf.matmul(x, weights['wt9'])
         x = hardware_net_tf.batch_norm(x, offset['h9'], scale['k9'])
         x = hardware_net_tf.SignTheano(x)
