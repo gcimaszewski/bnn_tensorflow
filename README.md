@@ -10,6 +10,7 @@ Both versions are run as scripts, i.e. by calling "python cifar10_inference.py".
 
 1. numpy
 2. pylearn2
+3. appropriate version of tensorflow
 
 ### Troubleshooting
 Note: I had problems importing the CIFAR10 dataset from pylearn2.  I don't know if this was merely due to my directory setup, but I was able to fix it with: 
