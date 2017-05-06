@@ -20,7 +20,6 @@ import hardware_net_tf
 import cPickle as pickle
 import gzip
 
-import hardware_net
 import FixedPoint
 import Printer
 
@@ -42,7 +41,6 @@ if __name__ == "__main__":
     params_dir = top_dir + '/params'
 
     # BinaryOut
-    activation = hardware_net.SignTheano
     print("activation = sign(x)")
 
     no_bias = True
@@ -71,7 +69,6 @@ if __name__ == "__main__":
     X = test_set.X[0:test_instances]
     #account for the data dimensions in tensorflow: ()
     X = np.transpose(X, [0, 2, 3, 1])
-    # X = FixedPoint.FixedPoint(32,31).convert(X)
     y = test_set.y[0:test_instances]
 
 
