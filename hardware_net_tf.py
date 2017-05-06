@@ -2,6 +2,7 @@ import time
 import numpy as np
 
 import tensorflow as tf
+#import tf.layers
 from tensorflow.python.framework import ops
 
 
@@ -79,6 +80,9 @@ def batch_norm(x, h, k):
     return normalized
 
 
+# class conv2d_layer(tf.layers.conv2d):
+#     def __init__(self):
+#         tf.layers.conv2d.__init__(self)
 
 
 
