@@ -19,10 +19,8 @@ import cPickle as pickle
 import gzip
 
 import FixedPoint
-import Printer
 
 from pylearn2.datasets.cifar10 import CIFAR10
-from collections import OrderedDict
 
 if __name__ == "__main__":
 
