@@ -18,7 +18,6 @@ import hardware_net_tf
 import cPickle as pickle
 import gzip
 
-import hardware_net
 import FixedPoint
 import Printer
 
@@ -40,7 +39,6 @@ if __name__ == "__main__":
     params_dir = top_dir + '/params'
 
     # BinaryOut
-    activation = hardware_net.SignTheano
     print("activation = sign(x)")
 
     no_bias = True
